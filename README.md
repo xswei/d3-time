@@ -27,13 +27,13 @@ d3.timeWeek.range(d3.timeMonth.floor(now), d3.timeMonth.ceil(now));
 //  Sun Jun 28 2015 00:00:00 GMT-0700 (PDT)]
 ```
 
-The d3-time module does not implement its own calendaring system; it merely implements a convenient API for calendar math on top of ECMAScript [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date). Thus, it ignores leap seconds and can only work with the local time zone and [Coordinated Universal Time](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) (UTC).
+`d3-time` 模块不会实现自己的日历系统。它仅仅是基于 `ECMAScript` 的 [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) 实现了一些方便的数学计算 `API`. 因此，它忽略了闰秒，只能与当地时区和 [Coordinated Universal Time(世界协调时)](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) (UTC)一起工作。
 
-This module is used by D3’s time scales to generate sensible ticks, by D3’s time format, and can also be used directly to do things like [calendar layouts](http://bl.ocks.org/mbostock/4063318).
+这个模块可以被 `D3` 的时间比例尺用来生成合理的刻度，通过 `D3` 的时间格式化可以直接被用来做类似于 [calendar layouts](http://bl.ocks.org/mbostock/4063318) 之类的事情。
 
 ## Installing
 
-If you use NPM, `npm install d3-time`. Otherwise, download the [latest release](https://github.com/xswei/d3-time/releases/latest). You can also load directly from [d3js.org](https://d3js.org), either as a [standalone library](https://d3js.org/d3-time.v1.min.js) or as part of [D3 4.0](https://github.com/xswei/d3). AMD, CommonJS, and vanilla environments are supported. In vanilla, a `d3` global is exported:
+`NPM` 安装： `npm install d3-time`. 此外还可以下载 [latest release](https://github.com/xswei/d3-time/releases/latest). 可以直接从 [d3js.org](https://d3js.org) 以 [standalone library](https://d3js.org/d3-time.v1.min.js) 或作为 [D3 4.0](https://github.com/xswei/d3) 的一部分引入. 支持 `AMD`, `CommonJS`, 以及基本的标签形式，如果使用标签引入会暴露全局 `d3` 变量:
 
 ```html
 <script src="https://d3js.org/d3-time.v1.min.js"></script>
@@ -44,7 +44,7 @@ var day = d3.timeDay(new Date);
 </script>
 ```
 
-[Try d3-time in your browser.](https://tonicdev.com/npm/d3-time)
+[在浏览器中测试 `d3-time`.](https://tonicdev.com/npm/d3-time)
 
 ## API Reference
 
