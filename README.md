@@ -50,7 +50,7 @@ var day = d3.timeDay(new Date);
 
 <a name="_interval" href="#_interval">#</a> <i>interval</i>(<i>date</i>) [<>](https://github.com/xswei/d3-time/blob/master/src/interval.js#L6 "Source")
 
-Alias for [*interval*.floor](#interval_floor). For example, [d3.timeYear](#timeYear)(*date*) and d3.timeYear.floor(*date*) are equivalent.
+[*interval*.floor](#interval_floor) 的别名. 例如 [d3.timeYear](#timeYear)(*date*) 和 d3.timeYear.floor(*date*) 是等价的.
 
 <a name="interval_floor" href="#interval_floor">#</a> <i>interval</i>.<b>floor</b>(<i>date</i>) [<>](https://github.com/xswei/d3-time/blob/master/src/interval.js#L10 "Source")
 
