@@ -67,19 +67,19 @@ function isDay(date) {
 }
 ```
 
-This is more reliable than testing whether the time is 12:00 AM, as in some time zones midnight may not exist due to daylight saving.
+这比测试时间是否为 `12:00 AM` 更可靠，因为在某些时区，由于夏令时可能不存在午夜。
 
 <a name="interval_round" href="#interval_round">#</a> <i>interval</i>.<b>round</b>(<i>date</i>) [<>](https://github.com/xswei/d3-time/blob/master/src/interval.js#L16 "Source")
 
-Returns a new date representing the closest interval boundary date to *date*. For example, [d3.timeDay](#timeDay).round(*date*) typically returns 12:00 AM local time on the given *date* if it is on or before noon, and 12:00 AM of the following day if it is after noon.
+日期取整，返回指定 *date* 的取整时刻。例如 [d3.timeDay](#timeDay).round(*date*)，如果当前 *date* 在 `12:00 AM` 之前会返回当天的 `12:00 AM`，否则会返回下一天的 `12:00 AM`.
 
-This method is idempotent: if the specified *date* is already rounded to the current interval, a new date with an identical time is returned.
+这个方法也是幂等的：对于一定时间区间内的 *date* 都会返回相同的新时刻。
 
 <a name="interval_ceil" href="#interval_ceil">#</a> <i>interval</i>.<b>ceil</b>(<i>date</i>) [<>](https://github.com/xswei/d3-time/blob/master/src/interval.js#L12 "Source")
 
-Returns a new date representing the earliest interval boundary date after or equal to *date*. For example, [d3.timeDay](#timeDay).ceil(*date*) typically returns 12:00 AM local time on the date following the given *date*.
+日期向上取整，返回不晚于指定 *date* 的最早的时刻。比如，[d3.timeDay](#timeDay).ceil(*date*) 通常会返回指定 *date* 下一天的 `12:00 AM`.
 
-This method is idempotent: if the specified *date* is already ceilinged to the current interval, a new date with an identical time is returned. Furthermore, the returned date is the maximum expressible value of the associated interval, such that *interval*.ceil(*interval*.ceil(*date*) + 1) returns the following interval boundary date.
+这个方法也是幂等的：对于一定时间区间内的 *date* 都会返回相同的新时刻。因此 *interval*.ceil(*interval*.ceil(*date*) + 1) 会返回当前日期的下下一天的 `12:00 AM`.
 
 <a name="interval_offset" href="#interval_offset">#</a> <i>interval</i>.<b>offset</b>(<i>date</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/interval.js#L22 "Source")
 
