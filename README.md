@@ -54,11 +54,11 @@ var day = d3.timeDay(new Date);
 
 <a name="interval_floor" href="#interval_floor">#</a> <i>interval</i>.<b>floor</b>(<i>date</i>) [<>](https://github.com/xswei/d3-time/blob/master/src/interval.js#L10 "Source")
 
-Returns a new date representing the latest interval boundary date before or equal to *date*. For example, [d3.timeDay](#timeDay).floor(*date*) typically returns 12:00 AM local time on the given *date*.
+对日期的向下取整，返回一个新日期，返回的日期不超过当前 *date*。例如 [d3.timeDay](#timeDay).floor(*date*) 通常返回给定 *date* 的当天 `12:00  AM`.
 
-This method is idempotent: if the specified *date* is already floored to the current interval, a new date with an identical time is returned. Furthermore, the returned date is the minimum expressible value of the associated interval, such that *interval*.floor(*interval*.floor(*date*) - 1) returns the preceeding interval boundary date.
+这个方法是幂等的：如果指定的 *date* 在当前时间间隔内，则返回相同时间的新日期。此外返回的日期是当前区间内的最小值，比如 *interval*.floor(*interval*.floor(*date*) - 1) 会返回前一个间隔的最小时间值。
 
-Note that the `==` and `===` operators do not compare by value with [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) objects, and thus you cannot use them to tell whether the specified *date* has already been floored. Instead, coerce to a number and then compare:
+注意 `==` and `===` 操作不能对比 [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) 对象，因此不能使用这个操作来判读指定的 *date* 是否已经完成向下取整。作为替代，你可以将其转换为数值然后对比：
 
 ```js
 // Returns true if the specified date is a day boundary.
