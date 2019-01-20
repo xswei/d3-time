@@ -83,13 +83,13 @@ function isDay(date) {
 
 <a name="interval_offset" href="#interval_offset">#</a> <i>interval</i>.<b>offset</b>(<i>date</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/interval.js#L22 "Source")
 
-Returns a new date equal to *date* plus *step* intervals. If *step* is not specified it defaults to 1. If *step* is negative, then the returned date will be before the specified *date*; if *step* is zero, then a copy of the specified *date* is returned; if *step* is not an integer, it is [floored](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/floor). This method does not round the specified *date* to the interval. For example, if *date* is today at 5:34 PM, then [d3.timeDay](#timeDay).offset(*date*, 1) returns 5:34 PM tomorrow (even if daylight saving changes!).
+返回一个新的日期，新的日期等于 *date* 加 *step* 间隔。如果没有指定 *step* 则默认为 `1`。如果 *step* 为负，则返回的新日期将比指定的 *date* 早。如果 *step* 为 `0` 则返回指定 *date* 的拷贝；如果 *step* 不是整数，则会使用 [floored](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/floor) 进行取整。这个方法不会对指定的 *date* 进行四舍五入。例如如果 *date* 为 今天的 `5:34 PM` 则 [d3.timeDay](#timeDay).offset(*date*, 1) 会返回明天的 `5:34 PM`(即使夏令时改变了也能正确返回)。
 
 <a name="interval_range" href="#interval_range">#</a> <i>interval</i>.<b>range</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/interval.js#L26 "Source")
 
-Returns an array of dates representing every interval boundary after or equal to *start* (inclusive) and before *stop* (exclusive). If *step* is specified, then every *step*th boundary will be returned; for example, for the [d3.timeDay](#timeDay) interval a *step* of 2 will return every other day. If *step* is not an integer, it is [floored](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/floor).
+返回介于 *start* (包含) 和 *stop* (不包含) 之间的日期间隔数组。如果 *step* 没有指定则默认返回每个日期间隔边界值；例如 [d3.timeDay](#timeDay) 间隔步长设置为 `2` 时表示每隔一天返回取一个值。如果 *step* 不是整数，则会使用 [floored](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/floor) 进行取整。
 
-The first date in the returned array is the earliest boundary after or equal to *start*; subsequent dates are [offset](#interval_offset) by *step* intervals and [floored](#interval_floor). Thus, two overlapping ranges may be consistent. For example, this range contains odd days:
+返回的数组的第一个元素的日期值表示所取的日期范围的最早值，不早于 *start*；随后的所有的值之间的间隔都为 *step* 表示的日期间隔。例如只取奇数天：
 
 ```js
 d3.timeDay.range(new Date(2015, 0, 1), new Date(2015, 0, 7), 2);
@@ -98,7 +98,7 @@ d3.timeDay.range(new Date(2015, 0, 1), new Date(2015, 0, 7), 2);
 //  Mon Jan 05 2015 00:00:00 GMT-0800 (PST)]
 ```
 
-While this contains even days:
+只取偶数天：
 
 ```js
 d3.timeDay.range(new Date(2015, 0, 2), new Date(2015, 0, 8), 2);
@@ -107,23 +107,23 @@ d3.timeDay.range(new Date(2015, 0, 2), new Date(2015, 0, 8), 2);
 //  Tue Jan 06 2015 00:00:00 GMT-0800 (PST)]
 ```
 
-To make ranges consistent when a *step* is specified, use [*interval*.every](#interval_every) instead.
+如果想要每个间隔的步长一致，可以使用 [*interval*.every](#interval_every) 代替。
 
 <a name="interval_filter" href="#interval_filter">#</a> <i>interval</i>.<b>filter</b>(<i>test</i>) [<>](https://github.com/xswei/d3-time/blob/master/src/interval.js#L35 "Source")
 
-Returns a new interval that is a filtered subset of this interval using the specified *test* function. The *test* function is passed a date and should return true if and only if the specified date should be considered part of the interval. For example, to create an interval that returns the 1st, 11th, 21th and 31th (if it exists) of each month:
+返回一个新的间隔，这个间隔是使用 *test* 函数对指定间隔进行过滤之后的子集。*test* 函数传递日期并且应该返回真或假以表示当前日期是否被被考虑在内。例如创建一个返回每个月 `1st`, `11th`, `21th` and `31th`(如果存在) 的间隔：
 
 ```js
 var i = d3.timeDay.filter(function(d) { return (d.getDate() - 1) % 10 === 0; });
 ```
 
-The returned filtered interval does not support [*interval*.count](#interval_count). See also [*interval*.every](#interval_every).
+返回的新的间隔不支持 [*interval*.count](#interval_count). 同时参考 [*interval*.every](#interval_every).
 
 <a name="interval_every" href="#interval_every">#</a> <i>interval</i>.<b>every</b>(<i>step</i>) [<>](https://github.com/xswei/d3-time/blob/master/src/interval.js#L50 "Source")
 
-Returns a [filtered](#interval_filter) view of this interval representing every *step*th date. The meaning of *step* is dependent on this interval’s parent interval as defined by the field function. For example, [d3.timeMinute](#timeMinute).every(15) returns an interval representing every fifteen minutes, starting on the hour: :00, :15, :30, :45, <i>etc.</i> Note that for some intervals, the resulting dates may not be uniformly-spaced; [d3.timeDay](#timeDay)’s parent interval is [d3.timeMonth](#timeMonth), and thus the interval number resets at the start of each month. If *step* is not valid, returns null. If *step* is one, returns this interval.
+返回当前间隔的经过过滤后的日期列表。*step* 依赖于当前间隔的类型，例如 [d3.timeMinute](#timeMinute).every(15) 会返回一个表示每隔 `15` 分钟取一个值的间隔。需要注意，对于一些间隔返回的日期可能不是均匀的。如果 *step* 不可用则返回 `null`。如果 *step* 为 `1` 则返回当前间隔。
 
-This method can be used in conjunction with [*interval*.range](#interval_range) to ensure that two overlapping ranges are consistent. For example, this range contains odd days:
+这个方法可以和 [*interval*.range](#interval_range) 结合使用以保障生成固定的日期列表：
 
 ```js
 d3.timeDay.every(2).range(new Date(2015, 0, 1), new Date(2015, 0, 7));
@@ -132,7 +132,7 @@ d3.timeDay.every(2).range(new Date(2015, 0, 1), new Date(2015, 0, 7));
 //  Mon Jan 05 2015 00:00:00 GMT-0800 (PST)]
 ```
 
-As does this one:
+同上：
 
 ```js
 d3.timeDay.every(2).range(new Date(2015, 0, 2), new Date(2015, 0, 8));
@@ -141,18 +141,18 @@ d3.timeDay.every(2).range(new Date(2015, 0, 2), new Date(2015, 0, 8));
 //  Wed Jan 07 2015 00:00:00 GMT-0800 (PST)]
 ```
 
-The returned filtered interval does not support [*interval*.count](#interval_count). See also [*interval*.filter](#interval_filter).
+返回的过滤间隔不支持 [*interval*.count](#interval_count)，同时参考 [*interval*.filter](#interval_filter).
 
 <a name="interval_count" href="#interval_count">#</a> <i>interval</i>.<b>count</b>(<i>start</i>, <i>end</i>) [<>](https://github.com/xswei/d3-time/blob/master/src/interval.js#L44 "Source")
 
-Returns the number of interval boundaries after *start* (exclusive) and before or equal to *end* (inclusive). Note that this behavior is slightly different than [*interval*.range](#interval_range) because its purpose is to return the zero-based number of the specified *end* date relative to the specified *start* date. For example, to compute the current zero-based day-of-year number:
+返回以当前间隔为单位，在 *start*(不包含) 之后和 *end*(包含) 之前的个数。注意这个行为与 [*interval*.range](#interval_range) 有所不同，因为它的目标是返回 *end* 相对于 *start* 之间的统计数。例如计算当前日期在当年内的基于 `0` 的天数统计:
 
 ```js
 var now = new Date;
 d3.timeDay.count(d3.timeYear(now), now); // 177
 ```
 
-Likewise, to compute the current zero-based week-of-year number for weeks that start on Sunday:
+同样的，计算当前基于 `0` 的对周日个数统计(过了多少个周日):
 
 ```js
 d3.timeSunday.count(d3.timeYear(now), now); // 25
@@ -160,11 +160,13 @@ d3.timeSunday.count(d3.timeYear(now), now); // 25
 
 <a name="timeInterval" href="#timeInterval">#</a> d3.<b>timeInterval</b>(<i>floor</i>, <i>offset</i>[, <i>count</i>[, <i>field</i>]]) [<>](https://github.com/xswei/d3-time/blob/master/src/interval.js#L4 "Source")
 
-Constructs a new custom interval given the specified *floor* and *offset* functions and an optional *count* function.
+构造给定指定的 *floor* 和 *offset* 函数以及可选的 *count* 函数自定义间隔。
 
-The *floor* function takes a single date as an argument and rounds it down to the nearest interval boundary.
+*floor* 函数接受单个日期作为参数，并将其四舍五入到最近的区间边界。
 
-The *offset* function takes a date and an integer step as arguments and advances the specified date by the specified number of boundaries; the step may be positive, negative or zero.
+*floor* 函数以日期和整数步长作为参数，将指定的日期向前推进指定的边界数; 步长可以是正的，负的或零。
+
+可选的 *count* 函数
 
 The optional *count* function takes a start date and an end date, already floored to the current interval, and returns the number of boundaries between the start (exclusive) and end (inclusive). If a *count* function is not specified, the returned interval does not expose [*interval*.count](#interval_count) or [*interval*.every](#interval_every) methods. Note: due to an internal optimization, the specified *count* function must not invoke *interval*.count on other time intervals.
 
