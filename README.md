@@ -166,7 +166,9 @@ d3.timeSunday.count(d3.timeYear(now), now); // 25
 
 *floor* 函数以日期和整数步长作为参数，将指定的日期向前推进指定的边界数; 步长可以是正的，负的或零。
 
-可选的 *count* 函数接收一个起始日期和结束日期，向下取整到当前间隔，并返回开始(独占)和结束(包含)之间的边界数。
+可选的 *count* 函数接收一个起始日期和结束日期，向下取整到当前间隔，并返回开始(独占)和结束(包含)之间的边界数。如果没有指定 *count* 方法则返回的间隔不会暴露 [*interval*.count](#interval_count) or [*interval*.every](#interval_every) 方法。
+
+如果没有指定count函数，则返回的interval不会公开interval。数或时间间隔。每一个方法
 
 The optional *count* function takes a start date and an end date, already floored to the current interval, and returns the number of boundaries between the start (exclusive) and end (inclusive). If a *count* function is not specified, the returned interval does not expose [*interval*.count](#interval_count) or [*interval*.every](#interval_every) methods. Note: due to an internal optimization, the specified *count* function must not invoke *interval*.count on other time intervals.
 
