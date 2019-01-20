@@ -152,7 +152,7 @@ var now = new Date;
 d3.timeDay.count(d3.timeYear(now), now); // 177
 ```
 
-同样的，计算当前基于 `0` 的对周日个数统计(过了多少个周日):
+同样的，计算当前基于 `0` 的对周个数统计(过了多少周):
 
 ```js
 d3.timeSunday.count(d3.timeYear(now), now); // 25
@@ -166,168 +166,164 @@ d3.timeSunday.count(d3.timeYear(now), now); // 25
 
 *floor* 函数以日期和整数步长作为参数，将指定的日期向前推进指定的边界数; 步长可以是正的，负的或零。
 
-可选的 *count* 函数接收一个起始日期和结束日期，向下取整到当前间隔，并返回开始(独占)和结束(包含)之间的边界数。如果没有指定 *count* 方法则返回的间隔不会暴露 [*interval*.count](#interval_count) or [*interval*.every](#interval_every) 方法。
+可选的 *count* 函数接收一个起始日期和结束日期，向下取整到当前间隔，并返回开始(独占)和结束(包含)之间的边界数。如果没有指定 *count* 方法则返回的间隔不会暴露 [*interval*.count](#interval_count) or [*interval*.every](#interval_every) 方法。注意，由于内部优化，指定的 `count` 函数不能调用其他的 *interval*.count 方法。
 
-如果没有指定count函数，则返回的interval不会公开interval。数或时间间隔。每一个方法
-
-The optional *count* function takes a start date and an end date, already floored to the current interval, and returns the number of boundaries between the start (exclusive) and end (inclusive). If a *count* function is not specified, the returned interval does not expose [*interval*.count](#interval_count) or [*interval*.every](#interval_every) methods. Note: due to an internal optimization, the specified *count* function must not invoke *interval*.count on other time intervals.
-
-The optional *field* function takes a date, already floored to the current interval, and returns the field value of the specified date, corresponding to the number of boundaries between this date (exclusive) and the latest previous parent boundary. For example, for the [d3.timeDay](#timeDay) interval, this returns the number of days since the start of the month. If a *field* function is not specified, it defaults to counting the number of interval boundaries since the UNIX epoch of January 1, 1970 UTC. The *field* function defines the behavior of [*interval*.every](#interval_every).
+可选字段 *field* 函数接受一个日期，该日期已向下取整到当前间隔，并返回指定日期的字段值，该值对应于此日期(排他的)和上一个最新父边界之间的边界数。例如，对于 [d3.timeDay](#timeDay)，会返回从当月初开始到指定日期的天数。如果没有指定 *field* 函数，则默认返回 `1970年1月1日UTC的UNIX纪元` 以来的间隔边界数。*field* 函数决定了 [*interval*.every](#interval_every) 的行为。
 
 ### Intervals
 
-The following intervals are provided:
+提供以下间隔类型：
 
 <a name="timeMillisecond" href="#timeMillisecond">#</a> d3.<b>timeMillisecond</b> [<>](https://github.com/xswei/d3-time/blob/master/src/millisecond.js "Source")
 <br><a href="#timeMillisecond">#</a> d3.<b>utcMillisecond</b>
 
-Milliseconds; the shortest available time unit.
+毫秒
 
 <a name="timeSecond" href="#timeSecond">#</a> d3.<b>timeSecond</b> [<>](https://github.com/xswei/d3-time/blob/master/src/second.js "Source")
 <br><a href="#timeSecond">#</a> d3.<b>utcSecond</b>
 
-Seconds (e.g., 01:23:45.0000 AM); 1,000 milliseconds.
+秒 (e.g., 01:23:45.0000 AM); `1,000` 毫秒.
 
 <a name="timeMinute" href="#timeMinute">#</a> d3.<b>timeMinute</b> [<>](https://github.com/xswei/d3-time/blob/master/src/minute.js "Source")
 <br><a href="#timeMinute">#</a> d3.<b>utcMinute</b> [<>](https://github.com/xswei/d3-time/blob/master/src/utcMinute.js "Source")
 
-Minutes (e.g., 01:02:00 AM); 60 seconds. Note that ECMAScript [ignores leap seconds](http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.1).
+分钟 (e.g., 01:02:00 AM); `60` 秒. 注意 `ECMAScript` [ignores leap seconds(忽略闰秒)](http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.1).
 
 <a name="timeHour" href="#timeHour">#</a> d3.<b>timeHour</b> [<>](https://github.com/xswei/d3-time/blob/master/src/hour.js "Source")
 <br><a href="#timeHour">#</a> d3.<b>utcHour</b> [<>](https://github.com/xswei/d3-time/blob/master/src/utcHour.js "Source")
 
-Hours (e.g., 01:00 AM); 60 minutes. Note that advancing time by one hour in local time can return the same hour or skip an hour due to daylight saving.
+小时 (e.g., 01:00 AM); `60` 分钟. 注意夏令时.
 
 <a name="timeDay" href="#timeDay">#</a> d3.<b>timeDay</b> [<>](https://github.com/xswei/d3-time/blob/master/src/day.js "Source")
 <br><a href="#timeDay">#</a> d3.<b>utcDay</b> [<>](https://github.com/xswei/d3-time/blob/master/src/utcDay.js "Source")
 
-Days (e.g., February 7, 2012 at 12:00 AM); typically 24 hours. Days in local time may range from 23 to 25 hours due to daylight saving.
+天 (e.g., February 7, 2012 at 12:00 AM); 通常 `24` 小时. 注意夏令时.
 
 <a name="timeWeek" href="#timeWeek">#</a> d3.<b>timeWeek</b> [<>](https://github.com/xswei/d3-time/blob/master/src/week.js "Source")
 <br><a href="#timeWeek">#</a> d3.<b>utcWeek</b> [<>](https://github.com/xswei/d3-time/blob/master/src/utcWeek.js "Source")
 
-Alias for [d3.timeSunday](#timeSunday); 7 days and typically 168 hours. Weeks in local time may range from 167 to 169 hours due on daylight saving.
+ [d3.timeSunday](#timeSunday) 的别名; 通常 `7` 天 `168` 小时. 注意夏令时.
 
 <a name="timeSunday" href="#timeSunday">#</a> d3.<b>timeSunday</b> [<>](https://github.com/xswei/d3-time/blob/master/src/week.js#L15 "Source")
 <br><a href="#timeSunday">#</a> d3.<b>utcSunday</b> [<>](https://github.com/xswei/d3-time/blob/master/src/utcWeek.js#L15 "Source")
 
-Sunday-based weeks (e.g., February 5, 2012 at 12:00 AM).
+基于周日的周 (e.g., February 5, 2012 at 12:00 AM).
 
 <a name="timeMonday" href="#timeMonday">#</a> d3.<b>timeMonday</b> [<>](https://github.com/xswei/d3-time/blob/master/src/week.js#L16 "Source")
 <br><a href="#timeMonday">#</a> d3.<b>utcMonday</b> [<>](https://github.com/xswei/d3-time/blob/master/src/utcWeek.js#L16 "Source")
 
-Monday-based weeks (e.g., February 6, 2012 at 12:00 AM).
+基于周一的周 (e.g., February 6, 2012 at 12:00 AM).
 
 <a name="timeTuesday" href="#timeTuesday">#</a> d3.<b>timeTuesday</b> [<>](https://github.com/xswei/d3-time/blob/master/src/week.js#L17 "Source")
 <br><a href="#timeTuesday">#</a> d3.<b>utcTuesday</b> [<>](https://github.com/xswei/d3-time/blob/master/src/utcWeek.js#L17 "Source")
 
-Tuesday-based weeks (e.g., February 7, 2012 at 12:00 AM).
+基于周二的周 (e.g., February 7, 2012 at 12:00 AM).
 
 <a name="timeWednesday" href="#timeWednesday">#</a> d3.<b>timeWednesday</b> [<>](https://github.com/xswei/d3-time/blob/master/src/week.js#L18 "Source")
 <br><a href="#timeWednesday">#</a> d3.<b>utcWednesday</b> [<>](https://github.com/xswei/d3-time/blob/master/src/utcWeek.js#L18 "Source")
 
-Wednesday-based weeks (e.g., February 8, 2012 at 12:00 AM).
+基于周三的周 (e.g., February 8, 2012 at 12:00 AM).
 
 <a name="timeThursday" href="#timeThursday">#</a> d3.<b>timeThursday</b> [<>](https://github.com/xswei/d3-time/blob/master/src/week.js#L19 "Source")
 <br><a href="#timeThursday">#</a> d3.<b>utcThursday</b> [<>](https://github.com/xswei/d3-time/blob/master/src/utcWeek.js#L19 "Source")
 
-Thursday-based weeks (e.g., February 9, 2012 at 12:00 AM).
+基于周四的周 (e.g., February 9, 2012 at 12:00 AM).
 
 <a name="timeFriday" href="#timeFriday">#</a> d3.<b>timeFriday</b> [<>](https://github.com/xswei/d3-time/blob/master/src/week.js#L20 "Source")
 <br><a href="#timeFriday">#</a> d3.<b>utcFriday</b> [<>](https://github.com/xswei/d3-time/blob/master/src/utcWeek.js#L20 "Source")
 
-Friday-based weeks (e.g., February 10, 2012 at 12:00 AM).
+基于周五的周 (e.g., February 10, 2012 at 12:00 AM).
 
 <a name="timeSaturday" href="#timeSaturday">#</a> d3.<b>timeSaturday</b> [<>](https://github.com/xswei/d3-time/blob/master/src/week.js#L21 "Source")
 <br><a href="#timeSaturday">#</a> d3.<b>utcSaturday</b> [<>](https://github.com/xswei/d3-time/blob/master/src/utcWeek.js#L21 "Source")
 
-Saturday-based weeks (e.g., February 11, 2012 at 12:00 AM).
+基于周六的周 (e.g., February 11, 2012 at 12:00 AM).
 
 <a name="timeMonth" href="#timeMonth">#</a> d3.<b>timeMonth</b> [<>](https://github.com/xswei/d3-time/blob/master/src/month.js "Source")
 <br><a href="#timeMonth">#</a> d3.<b>utcMonth</b> [<>](https://github.com/xswei/d3-time/blob/master/src/utcMonth.js "Source")
 
-Months (e.g., February 1, 2012 at 12:00 AM); ranges from 28 to 31 days.
+月 (e.g., February 1, 2012 at 12:00 AM); `28` 到 `31` 天.
 
 <a name="timeYear" href="#timeYear">#</a> d3.<b>timeYear</b> [<>](https://github.com/xswei/d3-time/blob/master/src/year.js "Source")
 <br><a href="#timeYear">#</a> d3.<b>utcYear</b> [<>](https://github.com/xswei/d3-time/blob/master/src/utcYear.js "Source")
 
-Years (e.g., January 1, 2012 at 12:00 AM); ranges from 365 to 366 days.
+年 (e.g., January 1, 2012 at 12:00 AM); `365` 到 `366` 天.
 
 ### Ranges
 
-For convenience, aliases for [*interval*.range](#interval_range) are also provided as plural forms of the corresponding interval.
+为方便起见，[*interval*.range](#interval_range) 的别名也以相应区间的复数形式提供。
 
 <a name="timeMilliseconds" href="#timeMilliseconds">#</a> d3.<b>timeMilliseconds</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/millisecond.js#L26 "Source")
 <br><a href="#timeMilliseconds">#</a> d3.<b>utcMilliseconds</b>(<i>start</i>, <i>stop</i>[, <i>step</i>])
 
-Aliases for [d3.timeMillisecond](#timeMillisecond).[range](#interval_range) and [d3.utcMillisecond](#timeMillisecond).[range](#interval_range).
+别名 [d3.timeMillisecond](#timeMillisecond).[range](#interval_range) 和 [d3.utcMillisecond](#timeMillisecond).[range](#interval_range).
 
 <a name="timeSeconds" href="#timeSeconds">#</a> d3.<b>timeSeconds</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/second.js#L15 "Source")
 <br><a href="#timeSeconds">#</a> d3.<b>utcSeconds</b>(<i>start</i>, <i>stop</i>[, <i>step</i>])
 
-Aliases for [d3.timeSecond](#timeSecond).[range](#interval_range) and [d3.utcSecond](#timeSecond).[range](#interval_range).
+别名 [d3.timeSecond](#timeSecond).[range](#interval_range) 和 [d3.utcSecond](#timeSecond).[range](#interval_range).
 
 <a name="timeMinutes" href="#timeMinutes">#</a> d3.<b>timeMinutes</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/minute.js#L15 "Source")
 <br><a href="#timeMinutes">#</a> d3.<b>utcMinutes</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/utcMinute.js#L15 "Source")
 
-Aliases for [d3.timeMinute](#timeMinute).[range](#interval_range) and [d3.utcMinute](#timeMinute).[range](#interval_range).
+别名 [d3.timeMinute](#timeMinute).[range](#interval_range) 和 [d3.utcMinute](#timeMinute).[range](#interval_range).
 
 <a name="timeHours" href="#timeHours">#</a> d3.<b>timeHours</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/hour.js#L17 "Source")
 <br><a href="#timeHours">#</a> d3.<b>utcHours</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/utcHour.js#L15 "Source")
 
-Aliases for [d3.timeHour](#timeHour).[range](#interval_range) and [d3.utcHour](#timeHour).[range](#interval_range).
+别名 [d3.timeHour](#timeHour).[range](#interval_range) 和 [d3.utcHour](#timeHour).[range](#interval_range).
 
 <a name="timeDays" href="#timeDays">#</a> d3.<b>timeDays</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/day.js#L15 "Source")
 <br><a href="#timeDays">#</a> d3.<b>utcDays</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/utcDay.js#L15 "Source")
 
-Aliases for [d3.timeDay](#timeDay).[range](#interval_range) and [d3.utcDay](#timeDay).[range](#interval_range).
+别名 [d3.timeDay](#timeDay).[range](#interval_range) 和 [d3.utcDay](#timeDay).[range](#interval_range).
 
 <a name="timeWeeks" href="#timeWeeks">#</a> d3.<b>timeWeeks</b>(<i>start</i>, <i>stop</i>[, <i>step</i>])
 <br><a href="#timeWeeks">#</a> d3.<b>utcWeeks</b>(<i>start</i>, <i>stop</i>[, <i>step</i>])
 
-Aliases for [d3.timeWeek](#timeWeek).[range](#interval_range) and [d3.utcWeek](#timeWeek).[range](#interval_range).
+别名 [d3.timeWeek](#timeWeek).[range](#interval_range) 和 [d3.utcWeek](#timeWeek).[range](#interval_range).
 
 <a name="timeSundays" href="#timeSundays">#</a> d3.<b>timeSundays</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/week.js#L23 "Source")
 <br><a href="#timeSundays">#</a> d3.<b>utcSundays</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/utcWeek.js#L23 "Source")
 
-Aliases for [d3.timeSunday](#timeSunday).[range](#interval_range) and [d3.utcSunday](#timeSunday).[range](#interval_range).
+别名 [d3.timeSunday](#timeSunday).[range](#interval_range) 和 [d3.utcSunday](#timeSunday).[range](#interval_range).
 
 <a name="timeMondays" href="#timeMondays">#</a> d3.<b>timeMondays</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/week.js#L24 "Source")
 <br><a href="#timeMondays">#</a> d3.<b>utcMondays</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/utcWeek.js#L24 "Source")
 
-Aliases for [d3.timeMonday](#timeMonday).[range](#interval_range) and [d3.utcMonday](#timeMonday).[range](#interval_range).
+别名 [d3.timeMonday](#timeMonday).[range](#interval_range) 和 [d3.utcMonday](#timeMonday).[range](#interval_range).
 
 <a name="timeTuesdays" href="#timeTuesdays">#</a> d3.<b>timeTuesdays</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/week.js#L25 "Source")
 <br><a href="#timeTuesdays">#</a> d3.<b>utcTuesdays</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/utcWeek.js#L25 "Source")
 
-Aliases for [d3.timeTuesday](#timeTuesday).[range](#interval_range) and [d3.utcTuesday](#timeTuesday).[range](#interval_range).
+别名 [d3.timeTuesday](#timeTuesday).[range](#interval_range) 和 [d3.utcTuesday](#timeTuesday).[range](#interval_range).
 
 <a name="timeWednesdays" href="#timeWednesdays">#</a> d3.<b>timeWednesdays</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/week.js#L26 "Source")
 <br><a href="#timeWednesdays">#</a> d3.<b>utcWednesdays</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/utcWeek.js#L26 "Source")
 
-Aliases for [d3.timeWednesday](#timeWednesday).[range](#interval_range) and [d3.utcWednesday](#timeWednesday).[range](#interval_range).
+别名 [d3.timeWednesday](#timeWednesday).[range](#interval_range) 和 [d3.utcWednesday](#timeWednesday).[range](#interval_range).
 
 <a name="timeThursdays" href="#timeThursdays">#</a> d3.<b>timeThursdays</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/week.js#L27 "Source")
 <br><a href="#timeThursdays">#</a> d3.<b>utcThursdays</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/utcWeek.js#L27 "Source")
 
-Aliases for [d3.timeThursday](#timeThursday).[range](#interval_range) and [d3.utcThursday](#timeThursday).[range](#interval_range).
+别名 [d3.timeThursday](#timeThursday).[range](#interval_range) 和 [d3.utcThursday](#timeThursday).[range](#interval_range).
 
 <a name="timeFridays" href="#timeFridays">#</a> d3.<b>timeFridays</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/week.js#L28 "Source")
 <br><a href="#timeFridays">#</a> d3.<b>utcFridays</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/utcWeek.js#L28 "Source")
 
-Aliases for [d3.timeFriday](#timeFriday).[range](#interval_range) and [d3.utcFriday](#timeFriday).[range](#interval_range).
+别名 [d3.timeFriday](#timeFriday).[range](#interval_range) 和 [d3.utcFriday](#timeFriday).[range](#interval_range).
 
 <a name="timeSaturdays" href="#timeSaturdays">#</a> d3.<b>timeSaturdays</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/week.js#L29 "Source")
 <br><a href="#timeSaturdays">#</a> d3.<b>utcSaturdays</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/utcWeek.js#L29 "Source")
 
-Aliases for [d3.timeSaturday](#timeSaturday).[range](#interval_range) and [d3.utcSaturday](#timeSaturday).[range](#interval_range).
+别名 [d3.timeSaturday](#timeSaturday).[range](#interval_range) 和 [d3.utcSaturday](#timeSaturday).[range](#interval_range).
 
 <a name="timeMonths" href="#timeMonths">#</a> d3.<b>timeMonths</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/month.js#L15 "Source")
 <br><a href="#timeMonths">#</a> d3.<b>utcMonths</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/utcMonth.js#L15 "Source")
 
-Aliases for [d3.timeMonth](#timeMonth).[range](#interval_range) and [d3.utcMonth](#timeMonth).[range](#interval_range).
+别名 [d3.timeMonth](#timeMonth).[range](#interval_range) 和 [d3.utcMonth](#timeMonth).[range](#interval_range).
 
 <a name="timeYears" href="#timeYears">#</a> d3.<b>timeYears</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/year.js#L26 "Source")
 <br><a href="#timeYears">#</a> d3.<b>utcYears</b>(<i>start</i>, <i>stop</i>[, <i>step</i>]) [<>](https://github.com/xswei/d3-time/blob/master/src/utcYear.js#L26 "Source")
 
-Aliases for [d3.timeYear](#timeYear).[range](#interval_range) and [d3.utcYear](#timeYear).[range](#interval_range).
+别名 [d3.timeYear](#timeYear).[range](#interval_range) 和 [d3.utcYear](#timeYear).[range](#interval_range).
